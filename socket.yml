@@ -1,0 +1,114 @@
+name: chat-socket
+description: Description of syncano-socket-chat
+version: 0.0.1
+runtime: nodejs_v8
+keywords:
+  - chat
+  - realtime
+  - group-chat
+
+classes:
+  chat_groups:
+    - name: group_name
+      type: string
+      filter_index: true
+    - name: type
+      type: string
+    - name: purpose
+      type: string
+  users2chat_groups:
+    - name: chat_group_id
+      type: integer
+      filter_index: true
+    - name: user_id
+      type: integer
+      filter_index: true
+
+endpoints:
+  create-group:
+    description: Endpoint to create chat group
+    parameters:
+      group_name:
+        type: string
+        description: Name of group (Must be less than 25 characters)
+        example: syncano-devs
+      type:
+        type: string
+        description: Type of group private or public
+        example: private
+      purpose:
+        type: string
+        description: Whats group is all about (Optional)
+        example: We play here
+    response:
+      mimetype: application/json
+      examples:
+        - exit_code: 200
+          description: Group created
+          example: |
+            {
+              "message": "Group successfully created"
+            }
+        - exit_code: 400
+          description: Error
+          example: |
+            {
+              "message": "Error creating chat group"
+            }
+  update-group:
+    description: Endpoint to update chat group
+    parameters:
+      group_name:
+        type: string
+        description: Name of group
+        example: syncano-devs
+      type:
+        type: string
+        description: Type of group private or public
+        example: private
+      purpose:
+        type: string
+        description: Whats group is all about
+        example: We play here
+    response:
+      mimetype: application/json
+      examples:
+        - exit_code: 200
+          description: Group created
+          example: |
+            {
+              "message": "Group successfully updated"
+            }
+        - exit_code: 400
+          description: Error
+          example: |
+            {
+              "message": "Error updating chat group"
+            }
+  add-user-to-group:
+    description: Endpoint to add user to group
+    private: true
+    parameters:
+      username:
+        type: string
+        description: The email of user
+        example: user1@syncano.com
+      chat_group_id:
+        type: integer
+        description: The ID of the chat group
+        example: 12
+    response:
+      mimetype: application/json
+      examples:
+        - exit_code: 200
+          description: Group created
+          example: |
+            {
+              "message": "User added successfully"
+            }
+        - exit_code: 400
+          description: Error
+          example: |
+            {
+              "message": "Failed to add user to chat group"
+            }
