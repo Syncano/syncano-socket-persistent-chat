@@ -15,9 +15,10 @@
   },
   "dependencies": {
     "@syncano/cli": "^0.9.3",
-    "@syncano/core": "latest"
+    "@syncano/core": "^0.11.0"
   },
   "devDependencies": {
+    "@syncano/test": "^0.11.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",

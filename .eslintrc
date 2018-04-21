@@ -36,6 +36,7 @@
     "arrow-body-style": 0,
     "function-paren-newline":0,
     "prefer-promise-reject-errors":0,
+    "brace-style": 0,
     "valid-jsdoc": [1,{
       "requireReturn": true,
       "requireReturnType": true,

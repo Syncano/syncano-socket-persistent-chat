@@ -1,114 +1,167 @@
-name: chat-socket
-description: Description of syncano-socket-chat
+name: persistent-chat
+description: Socket to send and receive persistent messages in private and in group
 version: 0.0.1
 runtime: nodejs_v8
 keywords:
   - chat
   - realtime
-  - group-chat
 
 classes:
   chat_groups:
     - name: group_name
       type: string
       filter_index: true
-    - name: type
-      type: string
     - name: purpose
       type: string
-  users2chat_groups:
-    - name: chat_group_id
-      type: integer
+  group_chat:
+    - name: message
+      type: text
+    - name: message_from
+      type: reference
+      target: user
       filter_index: true
-    - name: user_id
-      type: integer
+    - name: group
+      type: string
+      target: group
+      filter_index: true
+  private_chat:
+    - name: message
+      type: text
+    - name: message_from
+      type: reference
+      target: user
+      filter_index: true
+    - name: message_to
+      type: reference
+      target: user
       filter_index: true
 
 endpoints:
-  create-group:
-    description: Endpoint to create chat group
-    parameters:
-      group_name:
-        type: string
-        description: Name of group (Must be less than 25 characters)
-        example: syncano-devs
-      type:
-        type: string
-        description: Type of group private or public
-        example: private
-      purpose:
-        type: string
-        description: Whats group is all about (Optional)
-        example: We play here
-    response:
-      mimetype: application/json
-      examples:
-        - exit_code: 200
-          description: Group created
-          example: |
+  groups:
+    private: true
+    description: Endpoint to create, update and delete chat group
+    inputs:
+      properties:
+        group_name:
+          type: string
+          description: Name of group, should only contain url friendly characters.(Must be less than 25 characters)
+          examples:
+            - syncano-devs
+        purpose:
+          type: string
+          description: Whats group is all about (Optional)
+          examples:
+            - We play here
+        group_id:
+          type: string
+          description: The id of the group (Optional for chat group update and delete)
+          examples:
+            - 12
+    outputs:
+      success:
+        exit_code: 201
+        description: Success
+        examples:
+          - |
             {
               "message": "Group successfully created"
             }
-        - exit_code: 400
-          description: Error
-          example: |
+      fail:
+        exit_code: 400
+        description: Failed
+        examples:
+          - |
             {
-              "message": "Error creating chat group"
+              "message": "Group name already exists"
             }
-  update-group:
-    description: Endpoint to update chat group
-    parameters:
-      group_name:
-        type: string
-        description: Name of group
-        example: syncano-devs
-      type:
-        type: string
-        description: Type of group private or public
-        example: private
-      purpose:
-        type: string
-        description: Whats group is all about
-        example: We play here
-    response:
-      mimetype: application/json
-      examples:
-        - exit_code: 200
-          description: Group created
-          example: |
+
+  send-message-group:
+    description: Endpoint to send message to a group
+    inputs:
+      properties:
+        _user_key:
+          type: string
+          description: Token of user sending message (Optional)
+          examples:
+            - messageFrom@gmail.com
+        username:
+          type: string
+          description: Name of the User (Required only when user token not sent).
+          examples:
+            - Nik
+        message:
+          type: string
+          description: Chat message.
+          examples:
+            - How are you doing.
+        room:
+          type: string
+          description:  Name of group, should only contain url friendly characters.
+          examples:
+            - group_sports
+    outputs:
+      success:
+        exit_code: 200
+        description: Success
+        examples:
+          - |
             {
-              "message": "Group successfully updated"
+              "message_text": "How are you doing",
+              "username": "Nik"
             }
-        - exit_code: 400
-          description: Error
-          example: |
+      fail:
+        exit_code: 400
+        description: Failed
+        examples:
+          - |
             {
-              "message": "Error updating chat group"
+              "message": "Failed to publish message"
             }
-  add-user-to-group:
-    description: Endpoint to add user to group
-    private: true
-    parameters:
-      username:
-        type: string
-        description: The email of user
-        example: user1@syncano.com
-      chat_group_id:
-        type: integer
-        description: The ID of the chat group
-        example: 12
-    response:
-      mimetype: application/json
-      examples:
-        - exit_code: 200
-          description: Group created
-          example: |
+  group-chat:
+    channel: group.{room}
+    description: Endpoint to subcribe to poll for a group messages
+    examples:
+      - group.group_sports
+
+  send-private-chat:
+    description: Endpoint to send private message to user
+    inputs:
+      properties:
+        message:
+          type: string
+          description: Chat message
+          examples:
+            - How are you
+        _user_key:
+          type: string
+          description: Token of user sending message
+          examples:
+            - messageFrom@gmail.com
+        message_to:
+          type: string
+          description: Username of user to receive message
+          examples:
+            - messageTo@gmail.com
+    outputs:
+      success:
+        exit_code: 200
+        description: Success
+        examples:
+          - |
             {
-              "message": "User added successfully"
+              "message_text": "How are you doing",
+              "message_to": "messageTo@gmail.com"
+              "message_from": "messageFrom@gmail.com"
             }
-        - exit_code: 400
-          description: Error
-          example: |
+      fail:
+        exit_code: 400
+        description: Failed
+        examples:
+          - |
             {
-              "message": "Failed to add user to chat group"
+              "message": "Failed to send message"
             }
+
+  private-chat:
+    channel: messages.{user}
+    description: Endpoint to listen to user private message.

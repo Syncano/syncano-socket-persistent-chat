@@ -13,8 +13,6 @@ const checkRequired = (val) => {
   return str.length > 0;
 };
 
-// validateAllowedValues(type.toLowerCase(), ['public', 'private'], 'Group type must be either "private" or "public"');
-
 /**
  * Check for parameters required
  * @param {object} obj
@@ -34,20 +32,14 @@ const validateRequired = (obj, message = 'Validation error(s)') => {
   }
 };
 
-/**
- * Check for parameters required
- * @param {string} value
- * @param {array} allowedValues
- * @param {string} message
- * @returns {object| null} error response
- */
-const validateAllowedValues = (value, allowedValues, message) => {
-  if (!allowedValues.includes(value)) {
-    throw ({ message, status: 400 });
+const checkRequestMethodType = (requestMethod, expectedMethodTypes) => {
+  const expectedAsString = expectedMethodTypes.join(', ');
+  if (!expectedMethodTypes.includes(requestMethod)) {
+    throw ({ message: `Make sure to use ${expectedAsString} for creating, updating and deleting chat groups` });
   }
 };
 
 export {
-  validateAllowedValues,
+  checkRequestMethodType,
   validateRequired
 };
