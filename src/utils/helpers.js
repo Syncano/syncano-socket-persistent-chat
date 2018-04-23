@@ -35,7 +35,9 @@ const validateRequired = (obj, message = 'Validation error(s)') => {
 const checkRequestMethodType = (requestMethod, expectedMethodTypes) => {
   const expectedAsString = expectedMethodTypes.join(', ');
   if (!expectedMethodTypes.includes(requestMethod)) {
-    throw ({ message: `Make sure to use ${expectedAsString} for creating, updating and deleting chat groups` });
+    throw ({
+      message: `Make sure to use ${expectedAsString} for creating, retrieving, updating and deleting chat groups`
+    });
   }
 };
 

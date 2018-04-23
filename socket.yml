@@ -20,9 +20,9 @@ classes:
       type: reference
       target: user
       filter_index: true
-    - name: group
-      type: string
-      target: group
+    - name: room
+      type: reference
+      target: chat_groups
       filter_index: true
   private_chat:
     - name: message
@@ -54,7 +54,7 @@ endpoints:
             - We play here
         group_id:
           type: string
-          description: The id of the group (Optional for chat group update and delete)
+          description: The id of the group (Optional for chat group retrieval, update and delete)
           examples:
             - 12
     outputs:
@@ -84,11 +84,6 @@ endpoints:
           description: Token of user sending message (Optional)
           examples:
             - messageFrom@gmail.com
-        username:
-          type: string
-          description: Name of the User (Required only when user token not sent).
-          examples:
-            - Nik
         message:
           type: string
           description: Chat message.
@@ -96,9 +91,9 @@ endpoints:
             - How are you doing.
         room:
           type: string
-          description:  Name of group, should only contain url friendly characters.
+          description:  Id of chat group to send message.
           examples:
-            - group_sports
+            - 21
     outputs:
       success:
         exit_code: 200
