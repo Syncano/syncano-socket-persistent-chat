@@ -5,8 +5,7 @@ import 'dotenv/config';
 
 describe('groups', () => {
   const meta = generateMeta('groups');
-  console.log(meta, '>>>>>>>');
-  const args = { group_name: 'group1', purpose: 'Lets talk code here' };
+  const args = { group_name: 'groupTest1', purpose: 'Lets talk code here' };
   let group_id = '';
 
   describe('POST', () => {
@@ -15,7 +14,7 @@ describe('groups', () => {
       const { data: chatGroup, code } = await run('groups', { args, meta });
       expect(code).to.equal(201);
       expect(chatGroup).to.have.property('group_name');
-      expect(chatGroup.group_name).to.equal('group1');
+      expect(chatGroup.group_name).to.equal('groupTest1');
       expect(chatGroup).to.have.property('purpose');
       expect(chatGroup.purpose).to.equal('Lets talk code here');
       expect(chatGroup).to.have.property('message');
@@ -56,7 +55,7 @@ describe('groups', () => {
   describe('GET', () => {
     it('should return "NotFoundError" if group id passed is invalid', async () => {
       meta.request.REQUEST_METHOD = 'GET';
-      const { data, code } = await run('groups', { args: { group_id: 'invalidID' }, meta });
+      const { data, code } = await run('groups', { args: { group_id: -1 }, meta });
       expect(code).to.equal(400);
       expect(data).to.have.property('name');
       expect(data.name).to.equal('NotFoundError');
@@ -67,7 +66,7 @@ describe('groups', () => {
       const { data: chatGroup, code } = await run('groups', { args: { group_id }, meta });
       expect(code).to.equal(200);
       expect(chatGroup).to.have.property('group_name');
-      expect(chatGroup.group_name).to.equal('group1');
+      expect(chatGroup.group_name).to.equal('groupTest1');
       expect(chatGroup).to.have.property('purpose');
       expect(chatGroup.purpose).to.equal('Lets talk code here');
       expect(chatGroup).to.have.property('id');
