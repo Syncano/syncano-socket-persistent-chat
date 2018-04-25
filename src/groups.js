@@ -7,9 +7,10 @@ export default async (ctx) => {
   const { group_name, purpose } = groupParams;
   const requestMethod = meta.request.REQUEST_METHOD;
   const expectedMethodTypes = ['POST', 'GET', 'PATCH', 'DELETE'];
+  const requestMethodMessage = 'for creating, retrieving, updating and deleting chat groups';
 
   try {
-    checkRequestMethodType(requestMethod, expectedMethodTypes);
+    checkRequestMethodType(requestMethod, expectedMethodTypes, requestMethodMessage);
 
     if (requestMethod === 'POST') {
       validateRequired({ group_name });
@@ -24,10 +25,12 @@ export default async (ctx) => {
       const createdGroup = await data.chat_groups.create({ group_name, purpose });
       return response.json({ message: 'Group successfully created', ...createdGroup }, 201);
     }
-    if (requestMethod === 'GET') {
+
+    else if (requestMethod === 'GET') {
       const result = (group_id) ? await data.chat_groups.findOrFail(group_id) : await data.chat_groups.list();
       return response.json(result, 200);
     }
+
     else if (requestMethod === 'PATCH') {
       validateRequired({ group_id });
 
@@ -46,6 +49,7 @@ export default async (ctx) => {
       const updatedGroup = await data.chat_groups.update(group_id, groupParams);
       return response.json({ message: 'Group successfully updated', ...updatedGroup });
     }
+
     else if (requestMethod === 'DELETE') {
       validateRequired({ group_id });
 
