@@ -1,11 +1,10 @@
 name: persistent-chat
 description: Socket to send and receive persistent messages in private and in group
-version: 0.0.1
+version: 0.0.2
 runtime: nodejs_v8
 keywords:
   - chat
   - realtime
-
 classes:
   chat_groups:
     - name: group_name
@@ -35,20 +34,24 @@ classes:
       type: reference
       target: user
       filter_index: true
-
 endpoints:
   groups:
     private: true
-    description: Endpoint to create, update and delete chat group
-    long_description: |
+    description: 'Endpoint to create, update and delete chat group'
+    long_description: >
       This comprises of four actions for `groups` resource.
-      Make sure to use `POST`, `GET`, `PATCH` and `DELETE` request method for creating,
+
+      Make sure to use `POST`, `GET`, `PATCH` and `DELETE` request method for
+      creating,
+
       retrieving, updating and deleting chat groups respectively.
     inputs:
       properties:
         group_name:
           type: string
-          description: Name of group, should only contain url friendly characters.(Must be less than 25 characters)
+          description: >-
+            Name of group, should only contain url friendly characters.(Must be
+            less than 25 characters)
           examples:
             - syncano-devs
         purpose:
@@ -58,7 +61,9 @@ endpoints:
             - We play here
         group_id:
           type: integer
-          description: The id of the group (Optional for chat group retrieval, update and delete)
+          description: >-
+            The id of the group (Optional for chat group retrieval, update and
+            delete)
           examples:
             - 12
     outputs:
@@ -78,18 +83,24 @@ endpoints:
             {
               "message": "Group name already exists"
             }
-
   group-messages:
-    description: Endpoint to send message to group, list, update and delete message in a group
-    long_description: |
+    description: >-
+      Endpoint to send message to group, list, update and delete message in a
+      group
+    long_description: >
       This comprises of four actions for `group-messages` resource.
-      Make sure to use `POST`, `GET`, `PATCH` and `DELETE` request method for sending message to group,
+
+      Make sure to use `POST`, `GET`, `PATCH` and `DELETE` request method for
+      sending message to group,
+
       retrieving, updating and deleting chat group messages respectively.
     inputs:
       properties:
         _user_key:
           type: string
-          description: Token of user making request (use 'user_key' instead if in query params)
+          description: >-
+            Token of user making request (use 'user_key' instead if in query
+            params)
           examples:
             - abcdefb48a5b3f8
         message_text:
@@ -104,12 +115,14 @@ endpoints:
             - 1
         room:
           type: integer
-          description:  Id of chat group to send message.
+          description: Id of chat group to send message.
           examples:
             - 21
         group_id:
           type: integer
-          description: Group id to fetch list of messages in group. Required only to get group messages.
+          description: >-
+            Group id to fetch list of messages in group. Required only to get
+            group messages.
           examples:
             - 1
     outputs:
@@ -136,16 +149,20 @@ endpoints:
               }
             }
   group-chat:
-    channel: group.{room}
+    channel: 'group.{room}'
     description: Endpoint to subcribe to poll for a group messages
     examples:
       - group.group_sports
-
   private-messages:
-    description: Endpoint to send private message to a user, list, update and delete private messages
-    long_description: |
+    description: >-
+      Endpoint to send private message to a user, list, update and delete
+      private messages
+    long_description: >
       This comprises of four actions for `private-messages` resource.
-      Make sure to use `POST`, `GET`, `PATCH` and `DELETE` request method for sending private messages,
+
+      Make sure to use `POST`, `GET`, `PATCH` and `DELETE` request method for
+      sending private messages,
+
       retrieving, updating and deleting private messages respectively.
     inputs:
       properties:
@@ -156,7 +173,9 @@ endpoints:
             - How are you
         _user_key:
           type: string
-          description: Token of user making request (use 'user_key' instead if in query params)
+          description: >-
+            Token of user making request (use 'user_key' instead if in query
+            params)
           examples:
             - abcdefb48a5b3f8
         message_to:
@@ -191,7 +210,6 @@ endpoints:
                 "room": "The room field is required"
               }
             }
-
   private-chat:
-    channel: messages.{user}
+    channel: 'messages.{user}'
     description: Endpoint to listen to user private message.
