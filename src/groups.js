@@ -22,12 +22,12 @@ export default async (ctx) => {
       if (ifGroupExist) {
         return response.json({ message: 'Group name already exists' }, 400);
       }
-      const createdGroup = await data.chat_groups.create({ group_name, purpose });
+      const createdGroup = await data.chat_groups.create(groupParams);
       return response.json({ message: 'Group successfully created', ...createdGroup }, 201);
     }
 
     else if (requestMethod === 'GET') {
-      const result = (group_id) ? await data.chat_groups.findOrFail(group_id) : await data.chat_groups.list();
+      const result = group_id ? await data.chat_groups.findOrFail(group_id) : await data.chat_groups.list();
       return response.json(result, 200);
     }
 

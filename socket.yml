@@ -142,7 +142,7 @@ endpoints:
       - group.group_sports
 
   private-messages:
-    description: Endpoint to send private message a user, list, update and delete private messages
+    description: Endpoint to send private message to a user, list, update and delete private messages
     long_description: |
       This comprises of four actions for `private-messages` resource.
       Make sure to use `POST`, `GET`, `PATCH` and `DELETE` request method for sending private messages,

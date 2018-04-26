@@ -24,7 +24,7 @@ describe('group-messages', () => {
 
   after(async () => {
     metaGroup.request.REQUEST_METHOD = 'DELETE';
-    await await run('groups', { args: { group_id }, meta: metaGroup });
+    await run('groups', { args: { group_id }, meta: metaGroup });
   });
 
   describe('POST', () => {
@@ -106,7 +106,7 @@ describe('group-messages', () => {
       expect(data.message).to.equal('You don\'t have permission to delete message');
     });
 
-    it('should delete chat message successfully if valid valid parameters sent', async () => {
+    it('should delete chat message successfully if valid parameters sent', async () => {
       meta.request.REQUEST_METHOD = 'DELETE';
       const { data, code } = await run('group-messages', { args: { message_id }, meta });
       expect(code).to.equal(200);
