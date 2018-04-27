@@ -1,6 +1,6 @@
 name: persistent-chat
 description: Socket to send and receive persistent messages in private and in group
-version: 0.0.3
+version: 0.0.4
 runtime: nodejs_v8
 keywords:
   - chat
