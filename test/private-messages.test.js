@@ -118,7 +118,6 @@ describe('private-messages', () => {
     it('should delete chat message successfully if valid valid parameters sent', async () => {
       meta.request.REQUEST_METHOD = 'DELETE';
       const { data, code } = await run('private-messages', { args: { message_id }, meta });
-      console.log(data);
       expect(code).to.equal(200);
       expect(data).to.have.property('message');
       expect(data.message).to.equal('Message deleted successfully');
